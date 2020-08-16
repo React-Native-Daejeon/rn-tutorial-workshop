@@ -1,8 +1,17 @@
 import React from 'react';
-import {SafeAreaView, Text, Button, TextInput, View} from 'react-native';
+import {
+  SafeAreaView,
+  Text,
+  Button,
+  TextInput,
+  View,
+  StyleSheet,
+} from 'react-native';
 import {connect} from 'react-redux';
 import {newNote, unselectNote, deleteNote} from '../actions/actions';
-import {TouchableOpacity} from 'react-native-gesture-handler';
+import NoteCompleteButton from '../components/NoteCompleteButton';
+import NoteHeaderButton from '../components/NoteHeaderButton';
+import NoteInput from '../components/NoteInput';
 
 /**
  * Note(Memo) 화면을 담당할 NoteScreen 입니다.
@@ -93,66 +102,75 @@ class NoteScreen extends React.Component {
     this.props.navigation.goBack();
   }
 
-  buttonMode(editable) {
-    if (editable === true) {
-      return (
-        <TouchableOpacity
-          onPress={() => {
-            this.onSubmitNote();
-          }}>
-          <Text>완료</Text>
-        </TouchableOpacity>
-      );
+  renderEditButton() {
+    return (
+      <NoteHeaderButton
+        title="완료"
+        onPress={() => {
+          this.onSubmitNote();
+        }}
+      />
+    );
+  }
+
+  renderCompleteButton() {
+    return (
+      <NoteCompleteButton
+        onModeChange={() => {
+          this.onEditChange();
+        }}
+        onDelete={() => {
+          this.onDeleteNote();
+        }}
+      />
+    );
+  }
+
+  headerRightButton() {
+    if (this.state.edit === true) {
+      return this.renderEditButton();
     } else {
-      return (
-        <View>
-          <TouchableOpacity
-            onPress={() => {
-              this.onEditChange();
-            }}>
-            <Text>편집</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            onPress={() => {
-              this.onDeleteNote();
-            }}>
-            <Text>취소</Text>
-          </TouchableOpacity>
-        </View>
-      );
+      return this.renderCompleteButton();
     }
   }
 
   render() {
     return (
       <SafeAreaView>
-        <Text>NoteScreen</Text>
-        <Text>title</Text>
-        <TextInput
-          value={this.state.title}
-          editable={this.state.edit} // text input의 편집을 제어합니다
-          onChangeText={(text) => {
+        <View style={styles.header_container}>
+          <NoteHeaderButton
+            title="이전"
+            onPress={() => {
+              this.onBackPress();
+            }}
+          />
+          <View style={styles.header_right_container}>
+            {this.headerRightButton()}
+          </View>
+        </View>
+        <NoteInput
+          {...this.state}
+          changeTitle={(text) => {
             this.onChangeTitle(text);
           }}
-        />
-        <Text>body</Text>
-        <TextInput
-          value={this.state.body}
-          editable={this.state.edit} // text input의 편집을 제어합니다
-          onChangeText={(text) => {
+          changeBody={(text) => {
             this.onChangeBody(text);
           }}
-        />
-        {this.buttonMode(this.state.edit)}
-        <Button
-          onPress={() => {
-            this.onBackPress();
-          }}
-          title="Back to Main"
         />
       </SafeAreaView>
     );
   }
 }
+
+const styles = StyleSheet.create({
+  header_container: {
+    height: 40,
+    borderBottomWidth: 0.5,
+    borderBottomColor: '#cccccc',
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  header_right_container: {position: 'absolute', right: 0},
+});
 
 export default connect(mapStateToProps, mapDispatchToProps)(NoteScreen);
