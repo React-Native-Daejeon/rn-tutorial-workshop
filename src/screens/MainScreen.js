@@ -1,5 +1,5 @@
 import React from 'react';
-import {SafeAreaView, Text, Button} from 'react-native';
+import {SafeAreaView, Text, Button, TouchableOpacity, View} from 'react-native';
 import {connect} from 'react-redux';
 
 /**
@@ -21,6 +21,15 @@ class MainScreen extends React.Component {
     super(props);
   }
 
+  renderNoteItem(note) {
+    return (
+      <TouchableOpacity onPress={() => {}}>
+        <Text>{note.title}</Text>
+        <Text>{note.body}</Text>
+      </TouchableOpacity>
+    );
+  }
+
   render() {
     const notes = this.props.notes;
     return (
@@ -33,7 +42,11 @@ class MainScreen extends React.Component {
           title="Go to Note"
         />
         {notes.map((note, index) => {
-          return <Text key={`${note}::${index}`}>{note.title}</Text>;
+          return (
+            <View key={`${note.title}::${index}`}>
+              {this.renderNoteItem(note)}
+            </View>
+          );
         })}
       </SafeAreaView>
     );
