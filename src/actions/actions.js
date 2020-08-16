@@ -28,3 +28,11 @@ export const unselectNote = () => {
   console.log('Action::UNSELECT_NOTE');
   return {type: types.UNSELECT_NOTE};
 };
+
+/**
+ * deleteNote는 선택되어 있던 note를 삭제하는 action을 생성하는 함수입니다.
+ */
+export const deleteNote = () => {
+  console.log('Action::DELETE_NOTE');
+  return {type: types.DELETE_NOTE};
+};
