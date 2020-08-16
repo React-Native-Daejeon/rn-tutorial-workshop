@@ -1,5 +1,5 @@
 import React from 'react';
-import {SafeAreaView, Text} from 'react-native';
+import {SafeAreaView, Text, Button} from 'react-native';
 
 /**
  * Note(Memo) 화면을 담당할 NoteScreen 입니다.
