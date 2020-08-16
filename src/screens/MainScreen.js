@@ -1,7 +1,9 @@
 import React from 'react';
-import {SafeAreaView, Text, Button, TouchableOpacity, View} from 'react-native';
+import {SafeAreaView, ScrollView} from 'react-native';
 import {connect} from 'react-redux';
 import {selectNote} from '../actions/actions';
+import MainHeader from '../components/MainHeader';
+import NotePreview from '../components/NotePreview';
 
 /**
  * Main 화면을 담당할 MainScreen 입니다.
@@ -31,40 +33,36 @@ class MainScreen extends React.Component {
       this.props.select_note !== undefined
     ) {
       // 만약, 노트 하나를 선택하게 되면 note screen으로 보내줍니다
-      this.props.navigation.navigate('Note');
+      this.onGoNote();
     }
   }
 
-  renderNoteItem(note, index) {
-    return (
-      <TouchableOpacity
-        onPress={() => {
-          this.props.selectNote(index);
-        }}>
-        <Text>{note.title}</Text>
-        <Text>{note.body}</Text>
-      </TouchableOpacity>
-    );
+  onGoNote() {
+    this.props.navigation.navigate('Note');
   }
 
   render() {
     const notes = this.props.notes;
     return (
       <SafeAreaView>
-        <Text>MainScreen</Text>
-        <Button
-          onPress={() => {
-            this.props.navigation.navigate('Note');
+        <MainHeader
+          onAddPress={() => {
+            this.onGoNote();
           }}
-          title="노트 추가"
         />
-        {notes.map((note, index) => {
-          return (
-            <View key={`${note.title}::${index}`}>
-              {this.renderNoteItem(note, index)}
-            </View>
-          );
-        })}
+        <ScrollView bounces={false}>
+          {notes.map((note, index) => {
+            return (
+              <NotePreview
+                key={`${note.title}::${index}`}
+                onSelect={() => {
+                  this.props.selectNote(index);
+                }}
+                note={note}
+              />
+            );
+          })}
+        </ScrollView>
       </SafeAreaView>
     );
   }
