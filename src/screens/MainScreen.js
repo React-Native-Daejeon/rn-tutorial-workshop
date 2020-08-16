@@ -56,7 +56,7 @@ class MainScreen extends React.Component {
           onPress={() => {
             this.props.navigation.navigate('Note');
           }}
-          title="Go to Note"
+          title="노트 추가"
         />
         {notes.map((note, index) => {
           return (

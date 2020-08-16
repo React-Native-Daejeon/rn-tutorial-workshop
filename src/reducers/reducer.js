@@ -16,11 +16,21 @@ const initialState = {
 const reducer = (state = initialState, action) => {
   switch (action.type) {
     case types.NEW_NOTE: {
+      if (state.select_note !== undefined) {
+        // 선택된 노트가 있으면 해당 노트를 편집해줍니다.
+        const new_notes = [
+          ...state.notes.slice(0, state.select_note),
+          action.note,
+          ...state.notes.slice(state.select_note + 1),
+        ];
+        return {...state, notes: new_notes};
+      }
+      // 선택된 노트가 없으면 새롭게 노트를 추가해줍니다.
       return {...state, notes: [action.note, ...state.notes]};
     }
     case types.SELECT_NOTE: {
-      // index를 이용해 선택한 노트를 찾아 select_note field에 넣어줍니다
-      return {...state, select_note: state.notes[action.index]};
+      // 선택된 노트의 index 값을 넣어줍니다.
+      return {...state, select_note: action.index};
     }
     case types.UNSELECT_NOTE: {
       // 선택되어 있던 노트의 정보를 초기화 시켜줍니다
