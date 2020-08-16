@@ -5,6 +5,7 @@ import types from '../actions/types';
  */
 const initialState = {
   notes: [], // note의 형태는 object이며 title과 body라는 field를 갖습니다.
+  select_note: undefined, // select_note는 선택한 노트에 대한 정보를 담습니다.
 };
 
 /**
@@ -16,6 +17,14 @@ const reducer = (state = initialState, action) => {
   switch (action.type) {
     case types.NEW_NOTE: {
       return {...state, notes: [action.note, ...state.notes]};
+    }
+    case types.SELECT_NOTE: {
+      // index를 이용해 선택한 노트를 찾아 select_note field에 넣어줍니다
+      return {...state, select_note: state.notes[action.index]};
+    }
+    case types.UNSELECT_NOTE: {
+      // 선택되어 있던 노트의 정보를 초기화 시켜줍니다
+      return {...state, select_note: undefined};
     }
     default:
       return state;
