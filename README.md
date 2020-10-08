@@ -35,4 +35,4 @@ react-native run-android
 RND나 RND의 워크샵에 관심이 있으시면 아래를 통해 문의 부탁드립니다.
 
 dev@redwit.io
-bit.ly/react-daejoen
+bit.ly/react-daejeon
